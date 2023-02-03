@@ -14,8 +14,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run:  cd backend
-            docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - run:  cd backend
+    - run:  docker build . --file Dockerfile --tag my-image-name:$(date +%s)
     
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
