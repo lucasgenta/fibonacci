@@ -6,5 +6,5 @@ pm2 stop 0
 
 echo "stopping Docker container"
 
-docker compose down -d
+docker compose down
 
