@@ -1,0 +1,10 @@
+version: '1'
+services:
+  web:
+    image: frontfibo:V1
+    ports: 
+     - "3000:3000"
+  api:
+    image: backend-fibonacci:latest
+    ports:
+     - "5000:5000"
