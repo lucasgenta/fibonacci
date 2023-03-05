@@ -4,7 +4,8 @@ on:
   push:
     paths:
       - 'backend/**'
-
+      - 'frontend/**'
+      
 jobs:
 
   build:
@@ -13,9 +14,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Build the Docker backend image
       run:  cd backend && docker build . --file Dockerfile --tag my-image-name:$(date +%s)
     
+    - uses: actions/checkout@v3
+    - name: Build the Docker frontend image
+      run:  cd frontend && docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
