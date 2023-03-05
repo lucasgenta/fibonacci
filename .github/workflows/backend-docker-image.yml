@@ -14,21 +14,18 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run:  cd frontend && docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run:  cd backend && docker build . --file Dockerfile --tag fibobackend:$(date +%Y%m%d-%H%M%S)
 
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-    - name: Build container image
-      run: cd frontend && docker build -t ${{ secrets.REGISTRY_NAME }}/fibonacci:$(echo $GITHUB_SHA | head -c7) .
-
     - name: Log in to DigitalOcean Container Registry with short-lived credentials
       run: doctl registry login --expiry-seconds 1200
 
     - name: Push image to DigitalOcean Container Registry
-      run: cd frontend && docker push ${{ secrets.REGISTRY_NAME }}/fibonacci:$(echo $GITHUB_SHA | head -c7)
+      run: cd backend && docker push fibobackend:$(date +%Y%m%d-%H%M%S)
 
 
 
