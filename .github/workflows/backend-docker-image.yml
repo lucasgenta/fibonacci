@@ -25,7 +25,7 @@ jobs:
       run: doctl registry login --expiry-seconds 1200
 
     - name: Push image to DigitalOcean Container Registry
-      run: cd backend && docker push ${{ secrets.REGISTRY_NAME }}/fibonacci:$(date +%Y%m%d-%H%M%S)
+      run: cd backend && docker push ${{ secrets.REGISTRY_NAME }}/fibonacci
 
 
 
