@@ -29,8 +29,14 @@ jobs:
     - name: Build container image
       run: cd backend && docker build -t ${{ secrets.REGISTRY_NAME }}/fibonacci:$(echo $GITHUB_SHA | head -c7) .
 
+    - name: Build container image
+      run: cd frontend && docker build -t ${{ secrets.REGISTRY_NAME }}/fibonacci:$(echo $GITHUB_SHA | head -c7) .
+
     - name: Log in to DigitalOcean Container Registry with short-lived credentials
       run: doctl registry login --expiry-seconds 1200
 
-    - name: Push image to DigitalOcean Container Registry
+    - name: Push backend image to DigitalOcean Container Registry
       run: cd backend && docker push ${{ secrets.REGISTRY_NAME }}/fibonacci:$(echo $GITHUB_SHA | head -c7)
+      
+    - name: Push frontend image to DigitalOcean Container Registry
+      run: cd frontend && docker push ${{ secrets.REGISTRY_NAME }}/fibonacci:$(echo $GITHUB_SHA | head -c7)
