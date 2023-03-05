@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Frontend CI
 
 on:
   push:
@@ -25,4 +25,4 @@ jobs:
       run: doctl registry login --expiry-seconds 1200
 
     - name: Push image to DigitalOcean Container Registry
-      run: cd frontend && docker push fibonacci:$(date +%Y%m%d-%H%M%S)
+      run: cd frontend && docker push ${{ secrets.REGISTRY_NAME }}/fibofrontend:$(date +%Y%m%d-%H%M%S)
