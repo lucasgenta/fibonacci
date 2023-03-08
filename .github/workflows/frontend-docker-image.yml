@@ -18,7 +18,7 @@ jobs:
       run: echo "TIMESTAMP=$(date +%Y%m%d-%H%M%S)" >> $GITHUB_ENV
 
     - name: Build the Docker image
-      run:  cd frontend && docker build . --file Dockerfile --tag fibofrontend:$TIMESTAMP
+      run:  cd frontend && docker build . --file Dockerfile --tag ${{ secrets.REGISTRY_NAME }}/fibofrontend:$TIMESTAMP
 
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
