@@ -1,2 +1,4 @@
 Flask
 flask_cors
+pymongo
+loguru
