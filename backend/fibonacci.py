@@ -1,5 +1,5 @@
 import time
-import pymongo
+from pymongo import MongoClient
 from flask import Flask, request, make_response
 from flask_cors import CORS
 import os
@@ -13,14 +13,15 @@ app = Flask(__name__)
 app.debug = True  # Enable debug mode
 
 # Set up logger
-logger.add("app.log", rotation="500 MB", level="INFO")
+#logger.add("app.log", rotation="500 MB", level="INFO")
 
 
 # Set up database connection
-client = pymongo.MongoClient(os.environ.get('MONGO_URI', 'mongodb://root:pass@fibonacci_db:27019/'))
+client = MongoClient("mongodb://root:pass@:27017/")
 db = client["fibonacci_db"]
-collection = db["fibonacci_db"]
-
+collection = db["logs"]
+handler = logger.handlers.MongoDBHandler(collection)
+logger.add(handler)
 
 def fibonacci(n):
     if n <= 0:
@@ -43,14 +44,13 @@ def get_fibonacci():
     start_time = time.time()
 
     n = int(request.args.get('n'))
-    result = fibonacci(n)
 
     # Store result in database
-    collection.insert_one({"n": n, "result": result})
+    response = make_response(str(fibonacci(n)))
 
-    response = make_response(str(result))
-    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers.set('Access-Control-Allow-Origin', '*')
 
+    collection.insert_one({"n": n, "result": response})
     # Log how long the request took
     end_time = time.time()
     elapsed_time = end_time - start_time
