@@ -3,22 +3,25 @@ services:
   frontend:
     image: frontfibo:V1
     ports:
-     - "3000:3000"
+      - "3000:3000"
     build: ./frontend
   backend:
     build: ./backend
     ports:
-     - "5000:5000"
-    environment:
-      MONGO_URI: mongodb://root:pass@:27017/
-      LOGGING_LEVEL: INFO
+      - "5000:5000"
     depends_on:
       - database
-    volumes:
-      - ./mongo-data:/data/db
-  database:
-    image: mongo
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: pass
-      MONGO_INITDB_DATABASE: fibonacci_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: fibonacci
+  database:
+    image: postgres
+    restart: always
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: fibonacci
+

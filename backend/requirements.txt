@@ -1,4 +1,3 @@
 Flask
 flask_cors
-pymongo
-loguru
+psycopg2-binary
