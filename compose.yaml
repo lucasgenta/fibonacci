@@ -1,10 +1,27 @@
-version: '1'
+version: '3'
 services:
-  web:
+  frontend:
     image: frontfibo:V1
-    ports: 
-     - "3000:3000"
-  api:
-    image: backend-fibonacci:latest
     ports:
-     - "5000:5000"
+      - "3000:3000"
+    build: ./frontend
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: fibonacci
+  database:
+    image: postgres
+    restart: always
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: fibonacci
+
